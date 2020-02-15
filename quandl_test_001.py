@@ -32,29 +32,38 @@ forecast_time = int(30)
 data = getQuandlInfo(STOCK, START_DATE, END_DATE, RETURNS)
 
 #print info of data returned
-print (data.tail(10),"\n\n")
-#print (data.info())
+	#print (data.tail(10),"\n\n")
+	#print (data.info())
 
-#Plotting data received
-#plt.style.use("classic")
-#data["Close"].plot(label="TATA Motors", figsize=(16,8), title="Adjusted Closing Price")
-#plt.legend()
-#plt.show()
+#Plotting data received - Original data based on what is available in Quandl
+plt.style.use("classic")
+data["Close"].plot(label="TATA Motors", figsize=(16,8), title="Adjusted Closing Price")
+plt.legend()
+plt.show()
 
+
+# Create predicton model
 data["prediction"] = data["Close"].shift(-1)
 data.dropna(inplace=True)
 
 X = np.array(data.drop(["prediction"], 1))
 Y = np.array(data["prediction"])
 
+# Scale the data
 scale = StandardScaler()
 X = scale.fit_transform(X)
 X_prediction = X[-forecast_time:]
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.5)
 
+# Build a Linear Regression model
 clf = LinearRegression()
 clf.fit(X_train, Y_train)
+
+# Predict for 30 days
 prediction = (clf.predict(X_prediction))
 
+# Print the predictions
 print (prediction)
+
+# @TODO - Add the predictions to the dataframe and plot graphy
