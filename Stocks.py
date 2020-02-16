@@ -77,22 +77,17 @@ class Stocks:
 		return X_train, X_test, Y_train, Y_test
 
 
-	def buildLRModel(self, X_train, X_test, Y_train, Y_test):
-		
-		# Build a Linear Regression model
-		lr = LinearRegression()
-		lr.fit(X_train, Y_train)
 
-		y_pred = (lr.predict(X_test))
+	def printModelMetrics(self, model, X_train, Y_train, Y_test, y_pred):
 
 		# Print beta coefficients int he same order as passed
-		print ("Coefficients : ", lr.coef_)
+		print ("Coefficients : ", model.coef_)
 
 		# Print y-intercept
-		print ("Intercept \t\t : \t","{:.2f}".format(lr.intercept_))
+		print ("Intercept \t\t : \t","{:.2f}".format(model.intercept_))
 
 		# Compute R2 score
-		print ("R2 Score \t\t : \t","{:.2f}".format(lr.score(X_train, Y_train)))
+		print ("R2 Score \t\t : \t","{:.2f}".format(model.score(X_train, Y_train)))
 
 		# Print results of MAE
 		print ("Absolute Error \t\t : \t", "{:.2f}".format(metrics.mean_absolute_error(Y_test, y_pred)))
@@ -105,14 +100,20 @@ class Stocks:
 
 		#Zip to pair feature names and coefficents together
 		print ("\n\nCoefficients for attributes used in regression...")
-		coeff_zip = list(zip(Stocks.feature_cols, lr.coef_))
+		coeff_zip = list(zip(Stocks.feature_cols, model.coef_))
 		for ctr in range(len(coeff_zip)):
 			tabStr = ''.join("\t" * int((30-len(coeff_zip[ctr][0]))/8))
 			print (coeff_zip[ctr][0], tabStr, ":\t", coeff_zip[ctr][1])
 
-		#print ("\n\n")
-
-		return y_pred
 
 
-	# @TODO - Add the predictions to the dataframe and plot graphy
+	def buildLRModel(self, X_train, X_test, Y_train, Y_test):
+		
+		# Build a Linear Regression model
+		lr = LinearRegression()
+		lr.fit(X_train, Y_train)
+
+		y_pred = (lr.predict(X_test))
+
+		return y_pred, lr
+
