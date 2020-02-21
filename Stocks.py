@@ -14,7 +14,7 @@ from sklearn import metrics
 class Stocks:
 
 	STOCK = "BSE/BOM500570"
-	START_DATE = "2017-01-01"
+	START_DATE = "2010-01-01"
 	END_DATE = "2019-12-31"
 	RETURNS = "pandas"
 	X_prediction = None
@@ -25,7 +25,7 @@ class Stocks:
 
 
 	# Quandl function to retrieve data for a specified stock from a given date to a specified date as returnType (pandas)
-	def getQuandlInfo(self, stock, st_date, ed_date, returnType):
+	def getStockDetails(self, stock, st_date, ed_date, returnType):
 
 		#API Key Authentication
 		quandl.ApiConfig.api_key="JXZjmNDAB_YBxpxNtMCQ"
