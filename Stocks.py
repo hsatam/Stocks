@@ -36,12 +36,18 @@ class Stocks:
 		return data
 
 	# Plot the graph of closing by date - Adjusted Closing Price
-	def plotClosingByDay(self, data, label):
+	def plotClosingByDay(self, data, label, mdl="NN"):
 		
 		#Plotting data received - Original data based on what is available in Quandl
 		plt.style.use("classic")
 		data["Close"].plot(label=label, figsize=(16,8), title="Adjusted Closing Price")
-		data["y_pred"].plot(label="Predicted")
+		
+		print (data["y_pred_LR"])
+
+		if mdl == "LR":
+			data["y_pred_LR"].plot(label="Predicted")
+		elif mdl == "OLS":
+			data["y_pred_OLS"].plot(label="Predicted")
 
 		plt.legend()
 		plt.show()
@@ -55,13 +61,6 @@ class Stocks:
 		# Create predicton model
 		data["prediction"] = data["Close"].shift(-1)
 		data.dropna(inplace=True)
-
-		# Based on coefficients received, dropping columns with -ve coefficients
-		data.drop("Low", axis=1, inplace=True)
-		data.drop("High", axis=1, inplace=True)
-		data.drop("WAP", axis=1, inplace=True)
-		data.drop("No. of Shares", axis=1, inplace=True)
-		data.drop("Total Turnover", axis=1, inplace=True)
 
 		Stocks.feature_cols = list(data.columns.values.tolist())
 
@@ -80,8 +79,8 @@ class Stocks:
 
 	def printModelMetrics(self, model, X_train, Y_train, Y_test, y_pred):
 
-		# Print beta coefficients int he same order as passed
-		print ("Coefficients : ", model.coef_)
+		# Print beta coefficients int he same order as passed	
+		print ("Coefficients : ", list(map('{:.2f}'.format,model.coef_)))
 
 		# Print y-intercept
 		print ("Intercept \t\t : \t","{:.2f}".format(model.intercept_))
