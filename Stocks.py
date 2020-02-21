@@ -11,6 +11,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
+import statsmodels.api as sm
+
 class Stocks:
 
 	STOCK = "BSE/BOM500570"
@@ -41,8 +43,6 @@ class Stocks:
 		#Plotting data received - Original data based on what is available in Quandl
 		plt.style.use("classic")
 		data["Close"].plot(label=label, figsize=(16,8), title="Adjusted Closing Price")
-		
-		print (data["y_pred_LR"])
 
 		if mdl == "LR":
 			data["y_pred_LR"].plot(label="Predicted")
