@@ -110,10 +110,19 @@ class Stocks:
 	def buildLRModel(self, X_train, X_test, Y_train, Y_test):
 		
 		# Build a Linear Regression model
-		lr = LinearRegression()
-		lr.fit(X_train, Y_train)
+		model = LinearRegression()
+		model.fit(X_train, Y_train)
 
-		y_pred = (lr.predict(X_test))
+		y_pred = (model.predict(X_test))
 
-		return y_pred, lr
+		return y_pred, model
+
+	def buildOLSModel(self, X_train, X_test, Y_train, Y_test):
+
+		# Build a Regression model using OLS
+		model = sm.OLS(Y_train, X_train).fit()
+
+		y_pred = model.predict(X_test)
+
+		return y_pred, model
 
