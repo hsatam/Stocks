@@ -59,6 +59,12 @@ class Stocks:
 		data["prediction"] = data["Close"].shift(-1)
 		data.dropna(inplace=True)
 
+		# Drop columns with p-value > 0.05
+		data.drop(["Deliverable Quantity","High", "Spread H-L", "No. of Trades", 
+			"Total Turnover", "No. of Shares", "WAP", "% Deli. Qty to Traded Qty"], axis=1, inplace=True)
+
+		print (data.columns)
+
 		Stocks.feature_cols = list(data.columns.values.tolist())
 
 		X = np.array(data.drop(["prediction"], 1))
@@ -81,7 +87,9 @@ class Stocks:
 	def buildOLSModel(self, X_train, X_test, Y_train, Y_test):
 
 		# Build a Regression model using OLS (Ordinary Least Squares)
-		model = sm.OLS(Y_train, X_train).fit()
+		X_train = sm.add_constant(X_train)      ## let's add an intercept (beta_0) to our model
+		X_test  = sm.add_constant(X_test)
+		model = sm.OLS(Y_train, X_train).fit()  ## sm.OLS(output, input)
 
 		y_pred = model.predict(X_test)
 
