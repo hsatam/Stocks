@@ -24,6 +24,7 @@ X_train, X_test, Y_train, Y_test = stock.prepareDataForModel(data)
 for mdl in model:
 	pred_col = 'y_pred_' + mdl
 	data[pred_col] = np.nan
+	data["Y_test"] = np.nan
 
 	# Build a LinearRegression Model and carryout predictions
 	pred_col, model = stock.buildOLSModel(X_train, X_test, Y_train, Y_test)
@@ -31,7 +32,8 @@ for mdl in model:
 	y_pred_ctr = 0
 
 	for ctr in range((len(data.index) - len(pred_col)), len(data.index)):
-		data.iat[ctr,(len(data.columns) - 1)] = "{:.2f}".format(pred_col[y_pred_ctr])
+		data.iat[ctr,(len(data.columns) - 2)] = "{:.2f}".format(pred_col[y_pred_ctr])
+		data.iat[ctr,(len(data.columns) - 1)] = "{:.2f}".format(Y_test[y_pred_ctr])
 		y_pred_ctr += 1
 
 	stock.printModelMetrics (model, X_train, Y_train, Y_test, pred_col)

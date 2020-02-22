@@ -43,7 +43,8 @@ class Stocks:
 
 		#Plotting data received - Original data based on what is available in Quandl
 		plt.style.use("classic")
-		data["Close"].plot(label=self.scriptLabel, figsize=(16,8), title="Adjusted Closing Price")
+		#data["Close"].plot(label=self.scriptLabel, figsize=(16,8), title="Adjusted Closing Price")
+		data["Y_test"].plot(label="True Value")
 		data["y_pred_OLS"].plot(label="Predicted")
 
 		plt.legend()
@@ -65,6 +66,8 @@ class Stocks:
 
 		Stocks.feature_cols = list(data.columns.values.tolist())
 
+		print ("\n\n", Stocks.feature_cols, "\n\n")
+
 		X = np.array(data.drop(["prediction"], 1))
 		Y = np.array(data["prediction"])
 
@@ -72,7 +75,14 @@ class Stocks:
 		scale = StandardScaler()
 		X = scale.fit_transform(X)
 
-		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=None, test_size=None, shuffle=False, stratify=None)
+		# Train the data post shuffle to address entire dataset
+		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=.75, test_size=.25, shuffle=True)
+
+		# Test the model on 25% of the last records
+		X_train1, X_test1, Y_train1, Y_test1 = train_test_split(X, Y, train_size=None, test_size=None, shuffle=False, stratify=None)
+
+		X_test = X_test1
+		Y_test = Y_test1
 
 		return X_train, X_test, Y_train, Y_test
 
