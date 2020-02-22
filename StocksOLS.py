@@ -63,8 +63,6 @@ class Stocks:
 		data.drop(["Deliverable Quantity","High", "Spread H-L", "No. of Trades", 
 			"Total Turnover", "No. of Shares", "WAP", "% Deli. Qty to Traded Qty"], axis=1, inplace=True)
 
-		print (data.columns)
-
 		Stocks.feature_cols = list(data.columns.values.tolist())
 
 		X = np.array(data.drop(["prediction"], 1))
@@ -74,7 +72,7 @@ class Stocks:
 		scale = StandardScaler()
 		X = scale.fit_transform(X)
 
-		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=None, test_size=None, shuffle=False, stratify=None)
 
 		return X_train, X_test, Y_train, Y_test
 

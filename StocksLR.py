@@ -34,9 +34,6 @@ class Stocks:
 		#Data download 
 		data = quandl.get(self.stock, start_date=self.start_date, end_date=self.end_date, returns=self.returns)
 
-		print ("self.start_date : ", self.start_date)
-		print ("self.end_date : ", self.end_date)
-
 		return data
 
 
@@ -71,7 +68,7 @@ class Stocks:
 		scale = StandardScaler()
 		X = scale.fit_transform(X)
 
-		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=None, test_size=None, shuffle=False, stratify=None)
 
 		return X_train, X_test, Y_train, Y_test
 
