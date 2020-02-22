@@ -8,8 +8,8 @@ np.set_printoptions(suppress=True)
 
 # Retrieve data from Quandl using Stocks class
 stock = "BSE/BOM500570"
-start_date = "2010-01-01"
-end_date = "2019-12-31"
+start_date = "1991-01-01"
+end_date = "2020-12-31"
 scriptLabel = "TATA Motors"
 
 # Initialize Stocks class for operations
@@ -17,6 +17,8 @@ stock = Stocks(stock, start_date, end_date, scriptLabel)
 model = ['LR']
 
 data = stock.getStockDetails()
+
+print ("# of records : ", len(data.index))
 
 # Prepare data for model (using train_test_split 95:5)
 X_train, X_test, Y_train, Y_test = stock.prepareDataForModel(data)
@@ -37,4 +39,4 @@ for mdl in model:
 	stock.printModelMetrics (model, X_train, Y_train, Y_test, pred_col)
 
 	# Plot Closing price by Day post predictions
-	stock.plotClosingByDay(data, model)
+	stock.plotClosingByDay(data)

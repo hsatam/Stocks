@@ -34,11 +34,14 @@ class Stocks:
 		#Data download 
 		data = quandl.get(self.stock, start_date=self.start_date, end_date=self.end_date, returns=self.returns)
 
+		print ("self.start_date : ", self.start_date)
+		print ("self.end_date : ", self.end_date)
+
 		return data
 
 
 	# Plot the graph of closing by date - Adjusted Closing Price
-	def plotClosingByDay(self, data, model):
+	def plotClosingByDay(self, data):
 
 		#Plotting data received - Original data based on what is available in Quandl
 		plt.style.use("classic")
@@ -50,9 +53,6 @@ class Stocks:
 
 
 	def prepareDataForModel(self, data):
-
-		#Number of days to prdict price
-		forecast_time = int(30)
 
 		# Create predicton model
 		data["prediction"] = data["Close"].shift(-1)
