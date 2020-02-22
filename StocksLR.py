@@ -58,6 +58,10 @@ class Stocks:
 		data["prediction"] = data["Close"].shift(-1)
 		data.dropna(inplace=True)
 
+		# Drop columns with p-value > 0.05 based on input from OLS model to test hypothesis in RR
+		data.drop(["Deliverable Quantity","High", "Spread H-L", "No. of Trades", 
+			"Total Turnover", "No. of Shares", "WAP", "% Deli. Qty to Traded Qty"], axis=1, inplace=True)
+
 		Stocks.feature_cols = list(data.columns.values.tolist())
 
 		X = np.array(data.drop(["prediction"], 1))
